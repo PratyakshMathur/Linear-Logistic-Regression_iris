@@ -3,7 +3,7 @@ from sklearn.datasets import load_iris
 from sklearn.model_selection import train_test_split
 import matplotlib.pyplot as plt
 from Linear_Regression_S import LinearRegression_single
-
+### If want to use linearregression with scalar weights and input use Linear_Regression_S_scalar and add bias to parameter of .fit()
 # Load the Iris dataset
 iris = load_iris()
 
