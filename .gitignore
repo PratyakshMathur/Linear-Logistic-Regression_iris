@@ -1,0 +1,6 @@
+# Ignore NumPy compressed files
+*.npz
+*.DS_Store
+
+# Ignore Python bytecode cache
+__pycache__/
