@@ -82,19 +82,6 @@ class LinearRegression:
                     dW = (xi.T @ error) + reg_lambda * W
                     W -= learning_rate * dW                    
                     
-                    # val_loss = np.mean((feature_val @ W - target_val) ** 2)
-                    
-                    # if val_loss < self.best_val_loss:
-                    #     self.best_val_loss = val_loss
-                    #     self.best_weights = W.copy()
-                    #     patience_counter = 0
-                    # else:
-                    #     patience_counter += 1
-                    #     if patience_counter >= patience:
-                    #         print(f"Early stopping at epoch {epoch} with best val loss: {self.best_val_loss:.4f}")
-                    #         W =  self.best_weights
-                    #         return W  # Return the best weights found
-
             elif approach == 'm':  # Mini-batch Gradient Descent
                 indices = np.random.permutation(n_samples)
                 X_shuffled, y_shuffled = X[indices], y[indices]
@@ -107,20 +94,6 @@ class LinearRegression:
                     dW = (X_batch.T @ error) / len(X_batch) + reg_lambda * W
                     W -= learning_rate * dW
 
-                # Compute validation loss after each epoch
-                # val_loss = np.mean((feature_val @ W - target_val) ** 2)   
-                            
-                
-                # if val_loss < self.best_val_loss:
-                #     self.best_val_loss = val_loss
-                #     self.best_weights = W.copy()
-                #     patience_counter = 0
-                # else:
-                #     patience_counter += 1
-                #     if patience_counter >= patience:
-                #         print(f"Early stopping at epoch {epoch} with best val loss: {self.best_val_loss:.4f}")
-                #         W =  self.best_weights 
-                #         return W # Return the best weights found
             else:  # Batch Gradient Descent
                 y_pred = X @ W
                 error = y_pred - y

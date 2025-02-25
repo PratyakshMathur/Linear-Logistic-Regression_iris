@@ -32,7 +32,7 @@ def main():
         gradient_method='m',
         batch_size=32,
         learning_rate=0.01,
-        regularization=0.001,
+        # regularization=0.001,
         max_epochs=100,
         patience=3
     )
@@ -47,9 +47,9 @@ def main():
         method='gradient_descent',
         gradient_method='b',
         learning_rate=0.01,
-        regularization=0.01,
-        max_epochs=1000,
-        patience=100
+        # regularization=0.01,
+        max_epochs=100,
+        patience=3
     )
     time_taken['b'] = time_b
     batch_model.plot_val_loss("Plot-5-batch-batch")
@@ -62,9 +62,9 @@ def main():
         method='gradient_descent',
         gradient_method='s',
         learning_rate=0.02,
-        regularization=0.01,
-        max_epochs=1000,
-        patience=100
+        # regularization=0.01,
+        max_epochs=100,
+        patience=3
     )
     time_taken['s'] = time_s
     stochastic_model.plot_val_loss("Plot-5-stocastic-batch")

@@ -26,7 +26,7 @@ def main():
         method='gradient_descent',
         gradient_method='s',
         learning_rate=0.01,
-        regularization=0.01,
+        # regularization=0.01,
         max_epochs=100
     )
     sgd_acc = sgd_model.score(X_test, y_test)
@@ -42,7 +42,7 @@ def main():
         method='gradient_descent',
         gradient_method='b',
         learning_rate=0.01,
-        regularization=0.01,
+        # regularization=0.01,
         max_epochs=100
     )
     bgd_acc = bgd_model.score(X_test, y_test)
@@ -59,7 +59,7 @@ def main():
         gradient_method='m',
         batch_size=32,
         learning_rate=0.01,
-        regularization=0.01,
+        # regularization=0.01,
         max_epochs=100
     )
     mbgd_acc = mbgd_model.score(X_test, y_test)
@@ -73,7 +73,7 @@ def main():
         feature=X_train,
         target=y_train,
         method='normal_equation',
-        regularization=0.01,
+        # regularization=0.01,
         max_epochs=100
     )
     ne_acc = ne_model.score(X_test, y_test)

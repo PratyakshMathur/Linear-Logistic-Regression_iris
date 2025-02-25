@@ -7,8 +7,8 @@ from Linear_Regression import LinearRegression
 # Load the Iris dataset
 iris = load_iris()
 
-X = iris.data[:, [0,1,2]]
-y = iris.data[:, [3]]  # Predict sepal length using other features
+X = iris.data[:, [1,2,3]]
+y = iris.data[:, [0]]  # Predict sepal length using other features
 
 # Split the data
 X_train, X_test, y_train, y_test = train_test_split(
@@ -30,7 +30,7 @@ def main():
         gradient_method='m',
         batch_size=32,
         learning_rate=0.01,
-        regularization=0.001,
+        regularization=0.1,
         max_epochs=100,
         patience=3
     )
@@ -45,9 +45,9 @@ def main():
         method='gradient_descent',
         gradient_method='b',
         learning_rate=0.01,
-        regularization=0.01,
-        max_epochs=1000,
-        patience=100
+        regularization=0.1,
+        max_epochs=100,
+        patience=3
     )
     time_taken['b'] = time_b
     batch_model.plot_val_loss("Plot-1-batch-batch")
@@ -59,14 +59,14 @@ def main():
         target=y_train,
         method='gradient_descent',
         gradient_method='s',
-        learning_rate=0.02,
-        regularization=0.01,
-        max_epochs=1000,
-        patience=100
+        learning_rate=0.01,
+        regularization=0.1,
+        max_epochs=100,
+        patience=3
     )
     time_taken['s'] = time_s
     stochastic_model.plot_val_loss("Plot-1-stocastic-batch")
-    
+
     normal_equation_model = LinearRegression()
 
     weights ,time_n = normal_equation_model.fit(
