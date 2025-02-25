@@ -2,13 +2,14 @@ import numpy as np
 from sklearn.datasets import load_iris
 from sklearn.model_selection import train_test_split
 import matplotlib.pyplot as plt
-from Linear_Regression_S import LinearRegression_single
+from Linear_Regression import LinearRegression
 
 # Load the Iris dataset
 iris = load_iris()
 # print(iris)
-X = iris.data[:, [0,2,3]]
-y = iris.data[:, [1]]  # Predict sepal width using other features
+X = iris.data[:, [0, 1, 3]]
+y = iris.data[:, [2]]  # Predict petal length using other features
+
 
 # Split the data
 X_train, X_test, y_train, y_test = train_test_split(
@@ -21,7 +22,7 @@ X_train, X_test, y_train, y_test = train_test_split(
 def main():
     time_taken = {}
     # Create and train the model
-    mini_batch_model = LinearRegression_single()
+    mini_batch_model = LinearRegression()
 
     weights , time_m = mini_batch_model.fit(
         feature=X_train,
@@ -36,7 +37,7 @@ def main():
     )
     time_taken['m'] = time_m
 
-    batch_model = LinearRegression_single()
+    batch_model = LinearRegression()
 
     weights , time_b = batch_model.fit(
         feature=X_train,
@@ -50,7 +51,7 @@ def main():
     )
     time_taken['b'] = time_b
 
-    stochastic_model = LinearRegression_single()
+    stochastic_model = LinearRegression()
 
     weights , time_s = stochastic_model.fit(
         feature=X_train,
@@ -64,7 +65,7 @@ def main():
         patience=50
     )
     time_taken['s'] = time_s
-    normal_equation_model = LinearRegression_single()
+    normal_equation_model = LinearRegression()
 
     weights , time_n = normal_equation_model.fit(
         feature=X_train,
@@ -75,10 +76,10 @@ def main():
     )
     time_taken['n'] = time_n
     #Save the model
-    mini_batch_model.save('regression2_mini_model_1.npz')
-    batch_model.save('regression2_batch_model_1.npz')
-    stochastic_model.save('regression2_stochastic_model_1.npz')
-    normal_equation_model.save('regression2_normal_equation_model_1.npz')
+    mini_batch_model.save('regression3_mini_model_1.npz')
+    batch_model.save('regression3_batch_model_1.npz')
+    stochastic_model.save('regression3_stochastic_model_1.npz')
+    normal_equation_model.save('regression3_normal_equation_model_1.npz')
 
     # Print final training score
     model_m_score = mini_batch_model.score(X_train, y_train)

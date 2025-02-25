@@ -4,7 +4,7 @@ import os
 import time
 
 
-class LinearRegression_multiple:
+class LinearRegression:
     def __init__(self):
         # Initialize model parameters
         self.weights = None
@@ -14,7 +14,7 @@ class LinearRegression_multiple:
     
     def fit(self, feature, target, method='gradient_descent', gradient_method='m', 
             batch_size=32, learning_rate=0.01, regularization=0, max_epochs=100, patience=3):
-        """Train the Linear Regression model for multiple outputs and record training time."""
+        """Train the Linear Regression model and record training time."""
         
         start_time = time.time()  # Record start time
         
@@ -59,8 +59,10 @@ class LinearRegression_multiple:
         end_time = time.time()  # Record end time
         training_time = end_time - start_time  # Compute time taken
         
-        return self.best_weights, training_time
-    
+        # print(f"Training completed in {training_time:.4f} seconds")  # Print training time
+        
+        return self.best_weights,training_time
+        
     def gradient_descent(self, X, y, feature_val, target_val, W, n_samples, approach, batch_size,
                         learning_rate=0.01, max_epochs=1000, reg_lambda=0, patience=10, tol=1e-6):
         """Solves Linear Regression using Gradient Descent with optional L2 Regularization and Early Stopping."""
@@ -143,6 +145,7 @@ class LinearRegression_multiple:
                 break
 
         return W  # Return final weights after training
+
         
     def normal_equation(self, X, y, reg_lambda=0):
         """Solves Linear Regression using the Normal Equation with optional L2 Regularization."""
@@ -163,7 +166,7 @@ class LinearRegression_multiple:
         return X @ self.best_weights
     
     def score(self, X, y):
-        """Calculate Mean Squared Error between predictions and target values for multiple outputs."""
+        """Calculate Mean Squared Error between predictions and target values."""
         X = np.array(X)
         y = np.array(y)
         
@@ -179,30 +182,39 @@ class LinearRegression_multiple:
         return mse
     
     def save(self, filepath):
-        """Save model parameters to a file."""
+
+        # Ensure the filepath has .npz extension
         if not filepath.endswith('.npz'):
             filepath += '.npz'
-        
+            
+        # Create directory if it doesn't exist
         os.makedirs(os.path.dirname(os.path.abspath(filepath)), exist_ok=True)
         
+        # Prepare model parameters
         model_params = {
             'weights': self.best_weights,
         }
         
         try:
+            # Save the parameters
             np.savez(filepath, **model_params)
             print(f"Model parameters saved successfully to {filepath}")
         except Exception as e:
             raise Exception(f"Error saving model parameters: {str(e)}")
     
     def load(self, filepath):
-        """Load model parameters from a file."""
+ 
+        # Ensure the filepath has .npz extension
         if not filepath.endswith('.npz'):
             filepath += '.npz'
             
         try:
+            # Load the parameters
             loaded = np.load(filepath)
+            
+            # Set model parameters
             self.best_weights = loaded['weights']
+            
             print(f"Model parameters loaded successfully from {filepath}")
         except Exception as e:
             raise Exception(f"Error loading model parameters: {str(e)}")
