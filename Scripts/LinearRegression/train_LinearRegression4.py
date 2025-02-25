@@ -29,17 +29,18 @@ def main():
         target=y_train,
         method='gradient_descent',
         gradient_method='m',
-        batch_size=10,
+        batch_size=32,
         learning_rate=0.01,
-        regularization=0.01,
-        max_epochs=1000,
-        patience=10
+        regularization=0.001,
+        max_epochs=100,
+        patience=3
     )
     time_taken['m'] = time_m
+    mini_batch_model.plot_val_loss("Plot-4-mini-batch")
 
     batch_model = LinearRegression()
 
-    weights , time_b = batch_model.fit(
+    weights ,time_b = batch_model.fit(
         feature=X_train,
         target=y_train,
         method='gradient_descent',
@@ -50,21 +51,22 @@ def main():
         patience=100
     )
     time_taken['b'] = time_b
+    batch_model.plot_val_loss("Plot-4-batch-batch")
 
     stochastic_model = LinearRegression()
 
-    weights , time_s = stochastic_model.fit(
+    weights ,time_s = stochastic_model.fit(
         feature=X_train,
         target=y_train,
         method='gradient_descent',
         gradient_method='s',
-        batch_size=32,
-        learning_rate=0.01,
+        learning_rate=0.02,
         regularization=0.01,
-        max_epochs=100,
-        patience=50
+        max_epochs=1000,
+        patience=100
     )
     time_taken['s'] = time_s
+    stochastic_model.plot_val_loss("Plot-4-stocastic-batch")
     normal_equation_model = LinearRegression()
 
     weights , time_n = normal_equation_model.fit(

@@ -2,7 +2,7 @@ import numpy as np
 from numpy.linalg import inv
 import os
 import time
-
+import matplotlib.pyplot as plt
 
 class LinearRegression:
     def __init__(self):
@@ -10,6 +10,8 @@ class LinearRegression:
         self.weights = None
         self.best_weights = None
         self.best_val_loss = float('inf')
+        self.val_loss_ar = []
+        self.train_loss_ar = []
         
     
     def fit(self, feature, target, method='gradient_descent', gradient_method='m', 
@@ -51,7 +53,7 @@ class LinearRegression:
             gradient_method = 'b' 
             batch_size = n_samples
             print("Running on Batch mode with Normal equation method") 
-            self.weights = self.normal_equation(feature_train, target_train, regularization)
+            self.weights = self.normal_equation(feature, target, regularization)
             self.best_weights = self.weights.copy()
         else:
             raise ValueError("method must be one of 'gradient_descent' or 'normal_equation'")
@@ -59,7 +61,7 @@ class LinearRegression:
         end_time = time.time()  # Record end time
         training_time = end_time - start_time  # Compute time taken
         
-        # print(f"Training completed in {training_time:.4f} seconds")  # Print training time
+        
         
         return self.best_weights,training_time
         
@@ -68,30 +70,30 @@ class LinearRegression:
         """Solves Linear Regression using Gradient Descent with optional L2 Regularization and Early Stopping."""
 
         patience_counter = 0  # Initialize patience counter
-
         for epoch in range(max_epochs):
-            
+            train_loss_ar=[]
             if approach == 's':  # Stochastic Gradient Descent
                 for i in range(n_samples):
                     xi = X[i:i+1]
                     yi = y[i:i+1]
                     y_pred = xi @ W
                     error = y_pred - yi
+                    train_loss_ar.append(np.mean(error**2))
                     dW = (xi.T @ error) + reg_lambda * W
                     W -= learning_rate * dW                    
                     
-                    val_loss = np.mean((feature_val @ W - target_val) ** 2)
+                    # val_loss = np.mean((feature_val @ W - target_val) ** 2)
                     
-                    if val_loss < self.best_val_loss:
-                        self.best_val_loss = val_loss
-                        self.best_weights = W.copy()
-                        patience_counter = 0
-                    else:
-                        patience_counter += 1
-                        if patience_counter >= patience:
-                            print(f"Early stopping at epoch {epoch} with best val loss: {self.best_val_loss:.4f}")
-                            W =  self.best_weights
-                            return W  # Return the best weights found
+                    # if val_loss < self.best_val_loss:
+                    #     self.best_val_loss = val_loss
+                    #     self.best_weights = W.copy()
+                    #     patience_counter = 0
+                    # else:
+                    #     patience_counter += 1
+                    #     if patience_counter >= patience:
+                    #         print(f"Early stopping at epoch {epoch} with best val loss: {self.best_val_loss:.4f}")
+                    #         W =  self.best_weights
+                    #         return W  # Return the best weights found
 
             elif approach == 'm':  # Mini-batch Gradient Descent
                 indices = np.random.permutation(n_samples)
@@ -101,31 +103,36 @@ class LinearRegression:
                     y_batch = y_shuffled[i:i+batch_size]
                     y_pred = X_batch @ W
                     error = y_pred - y_batch
+                    train_loss_ar.append(np.mean(error**2))
                     dW = (X_batch.T @ error) / len(X_batch) + reg_lambda * W
                     W -= learning_rate * dW
 
                 # Compute validation loss after each epoch
-                val_loss = np.mean((feature_val @ W - target_val) ** 2)                    
+                # val_loss = np.mean((feature_val @ W - target_val) ** 2)   
+                            
                 
-                if val_loss < self.best_val_loss:
-                    self.best_val_loss = val_loss
-                    self.best_weights = W.copy()
-                    patience_counter = 0
-                else:
-                    patience_counter += 1
-                    if patience_counter >= patience:
-                        print(f"Early stopping at epoch {epoch} with best val loss: {self.best_val_loss:.4f}")
-                        W =  self.best_weights 
-                        return W # Return the best weights found
+                # if val_loss < self.best_val_loss:
+                #     self.best_val_loss = val_loss
+                #     self.best_weights = W.copy()
+                #     patience_counter = 0
+                # else:
+                #     patience_counter += 1
+                #     if patience_counter >= patience:
+                #         print(f"Early stopping at epoch {epoch} with best val loss: {self.best_val_loss:.4f}")
+                #         W =  self.best_weights 
+                #         return W # Return the best weights found
             else:  # Batch Gradient Descent
                 y_pred = X @ W
                 error = y_pred - y
+                train_loss_ar.append(np.mean(error**2))
                 dW = (X.T @ error) / n_samples + reg_lambda * W
                 W -= learning_rate * dW
 
             # Compute validation loss after each epoch
             val_loss = np.mean((feature_val @ W - target_val) ** 2)
-            
+            self.val_loss_ar.append(val_loss)
+            train_loss = sum(train_loss_ar)/len(train_loss_ar)
+            self.train_loss_ar.append(train_loss)
 
             if val_loss < self.best_val_loss:
                 self.best_val_loss = val_loss
@@ -146,7 +153,20 @@ class LinearRegression:
 
         return W  # Return final weights after training
 
-        
+    def plot_val_loss(self,filename):
+        if self.val_loss_ar == []:
+            print("Train the model to print the validation loss")
+        else:
+            plt.figure(figsize=(8, 5))
+            plt.plot(range(len(self.val_loss_ar)), self.val_loss_ar, marker='o', linestyle='-', color='b', label='Validation Loss')
+            plt.xlabel("Epoch Number")
+            plt.ylabel("Validation Loss")
+            plt.title("Validation Loss Over Epochs")
+            plt.legend()
+            plt.grid(True)
+            plt.savefig(f"plots/{filename}")
+            plt.close()
+
     def normal_equation(self, X, y, reg_lambda=0):
         """Solves Linear Regression using the Normal Equation with optional L2 Regularization."""
         n_features = X.shape[1]

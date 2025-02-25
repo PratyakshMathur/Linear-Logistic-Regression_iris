@@ -35,6 +35,7 @@ def main():
         patience=3
     )
     time_taken['m'] = time_m
+    mini_batch_model.plot_val_loss("Plot-1-mini-batch")
 
     batch_model = LinearRegression()
 
@@ -49,6 +50,7 @@ def main():
         patience=100
     )
     time_taken['b'] = time_b
+    batch_model.plot_val_loss("Plot-1-batch-batch")
 
     stochastic_model = LinearRegression()
 
@@ -63,6 +65,8 @@ def main():
         patience=100
     )
     time_taken['s'] = time_s
+    stochastic_model.plot_val_loss("Plot-1-stocastic-batch")
+    
     normal_equation_model = LinearRegression()
 
     weights ,time_n = normal_equation_model.fit(

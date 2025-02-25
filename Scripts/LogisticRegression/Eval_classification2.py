@@ -3,6 +3,40 @@ import numpy as np
 from train_classification_2 import X_test,y_test,target_names
 from sklearn.metrics import classification_report
 # Load all model
+import matplotlib.pyplot as plt
+from mlxtend.plotting import plot_decision_regions
+
+def plot_decision_boundary(model, X, y, filename):
+    """
+    Plots and saves the decision boundary for a trained logistic regression model.
+    
+    Parameters:
+    -----------
+    model : LogisticRegression
+        The trained logistic regression model.
+    X : array-like of shape (n_samples, 2)
+        The feature matrix (only two features should be used for visualization).
+    y : array-like of shape (n_samples,)
+        The target labels.
+    filename : str
+        The name of the file to save the plot.
+    """
+    
+    if X.shape[1] != 2:
+        raise ValueError("This function only supports plotting for 2D feature space.")
+    
+    plt.figure(figsize=(8, 6))
+    plot_decision_regions(X=X, y=y, clf=model, legend=2)
+    plt.title("Decision Boundary")
+    plt.xlabel("Feature 1")
+    plt.ylabel("Feature 2")
+    plt.grid(True)
+    
+    # Save plot
+    plt.savefig(f"plots/{filename}.png")
+    plt.close()
+    
+    print(f"Plot saved as 'plots/{filename}.png'")
 
 mini_batch_model = LogisticRegression()
 mini_batch_model.load("models/classification_mini_model_2.npz")
@@ -40,6 +74,7 @@ best_model = LogisticRegression()
 best_model.load("models/best_classification_model_2.npz")
 
 y_pred = best_model.predict(X_test)
+plot_decision_boundary(best_model,X_test,y_pred,"Plot-logistic-regression-best-model-1")
 print("\nClassification Report:")
 print(np.unique(y_test))
 print(classification_report(y_test, y_pred, target_names=target_names))

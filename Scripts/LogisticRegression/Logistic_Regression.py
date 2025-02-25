@@ -206,6 +206,7 @@ class LogisticRegression:
     def predict(self, X):
         probs = self.predict_proba(X)
         return self.classes_[np.argmax(probs, axis=1)]
+
     
     def save(self, filepath):
         if not filepath.endswith('.npz'):

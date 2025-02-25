@@ -24,46 +24,50 @@ def main():
     
     # Mini-Batch Gradient Descent
     mini_batch_model = LinearRegression()
-    weights, time_m = mini_batch_model.fit(
+
+    weights , time_m = mini_batch_model.fit(
         feature=X_train,
         target=y_train,
         method='gradient_descent',
         gradient_method='m',
-        batch_size=30,
-        learning_rate=0.015,
-        regularization=0.0005,
-        max_epochs=1000,
-        patience=100
+        batch_size=32,
+        learning_rate=0.01,
+        regularization=0.001,
+        max_epochs=100,
+        patience=3
     )
     time_taken['m'] = time_m
-    
-    # Batch Gradient Descent
+    mini_batch_model.plot_val_loss("Plot-5-mini-batch")
+
     batch_model = LinearRegression()
-    weights, time_b = batch_model.fit(
+
+    weights ,time_b = batch_model.fit(
         feature=X_train,
         target=y_train,
         method='gradient_descent',
         gradient_method='b',
         learning_rate=0.01,
-        regularization=0.001,
+        regularization=0.01,
         max_epochs=1000,
         patience=100
     )
     time_taken['b'] = time_b
-    
-    # Stochastic Gradient Descent
+    batch_model.plot_val_loss("Plot-5-batch-batch")
+
     stochastic_model = LinearRegression()
-    weights, time_s = stochastic_model.fit(
+
+    weights ,time_s = stochastic_model.fit(
         feature=X_train,
         target=y_train,
         method='gradient_descent',
         gradient_method='s',
-        learning_rate=0.0005,
-        regularization=0.001,
+        learning_rate=0.02,
+        regularization=0.01,
         max_epochs=1000,
         patience=100
     )
     time_taken['s'] = time_s
+    stochastic_model.plot_val_loss("Plot-5-stocastic-batch")
     
     #Normal Equation
     normal_equation_model = LinearRegression()
