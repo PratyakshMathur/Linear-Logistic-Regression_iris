@@ -7,10 +7,9 @@ from Logistic_Regression import LogisticRegression
 
 # Load iris dataset
 iris = load_iris()
-X = iris.data
+X = iris.data[:, [0, 1]]
 y = iris.target
 target_names=iris.target_names
-
 # Split the data into training and testing sets
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.1, random_state=42)
 
@@ -30,7 +29,7 @@ def main():
     )
     sgd_acc = sgd_model.score(X_test, y_test)
     print(f"SGD Accuracy: {sgd_acc:.4f}\n")
-    sgd_model.save("classification_stochastic_model_1.npz")
+    sgd_model.save("models/classification_stochastic_model_2.npz")
 
     # 2. Batch Gradient Descent
     print("Training with Batch Gradient Descent...")
@@ -46,7 +45,7 @@ def main():
     )
     bgd_acc = bgd_model.score(X_test, y_test)
     print(f"BGD Accuracy: {bgd_acc:.4f}\n")
-    bgd_model.save("classification_batch_model_1.npz")
+    bgd_model.save("models/classification_batch_model_2.npz")
 
     # 3. Mini-Batch Gradient Descent
     print("Training with Mini-Batch Gradient Descent...")
@@ -63,7 +62,7 @@ def main():
     )
     mbgd_acc = mbgd_model.score(X_test, y_test)
     print(f"Mini-Batch GD Accuracy: {mbgd_acc:.4f}\n")
-    mbgd_model.save("classification_mini_model_1.npz")
+    mbgd_model.save("models/classification_mini_model_2.npz")
 
     # 4. Normal Equation
     print("Training with Normal Equation (IRLS)...")
@@ -77,7 +76,7 @@ def main():
     )
     ne_acc = ne_model.score(X_test, y_test)
     print(f"Normal Equation Accuracy: {ne_acc:.4f}\n")
-    ne_model.save("classification_normal_model_1.npz")
+    ne_model.save("models/classification_normal_model_2.npz")
 
 
 if __name__ == '__main__':

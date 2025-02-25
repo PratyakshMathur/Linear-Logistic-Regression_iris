@@ -75,10 +75,10 @@ def main():
     )
     time_taken['n'] = time_n
     #Save the model
-    mini_batch_model.save('regression2_mini_model_1.npz')
-    batch_model.save('regression2_batch_model_1.npz')
-    stochastic_model.save('regression2_stochastic_model_1.npz')
-    normal_equation_model.save('regression2_normal_equation_model_1.npz')
+    mini_batch_model.save('models/regression2_mini_model_1.npz')
+    batch_model.save('models/regression2_batch_model_1.npz')
+    stochastic_model.save('models/regression2_stochastic_model_1.npz')
+    normal_equation_model.save('models/regression2_normal_equation_model_1.npz')
 
     # Print final training score
     model_m_score = mini_batch_model.score(X_train, y_train)
